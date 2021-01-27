@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  border-bottom: 3px solid black;
+  &__title {
+    flex-grow: 1;
+    font-size: 35px;
+    text-align: center;
+  }
+  &__button {
+    font-size: 55px;
+    margin: 0 25px;
+  }
+}
