@@ -9,7 +9,9 @@
     text-align: center;
   }
   &__button {
-    font-size: 55px;
     margin: 0 25px;
+    &-icon {
+      font-size: 40px;
+    }
   }
 }
