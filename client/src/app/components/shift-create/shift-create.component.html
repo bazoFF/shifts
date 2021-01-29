@@ -1,13 +1,42 @@
-<div class="modal-header">
-    <h4 class="modal-title">Добавление смены</h4>
-    <button type="button" class="close" (click)="activeModal.dismiss()">
-        <span class="material-icons">close</span>
-    </button>
-</div>
-<div class="modal-body">
-    <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam corporis dolor doloremque eligendi esse ipsam ipsum iste modi mollitia, obcaecati officia, officiis praesentium quidem quod similique tempora tenetur vero.</span><span>Esse maxime minima nemo nobis nulla obcaecati pariatur perspiciatis, placeat quo reiciendis repellendus similique sit veritatis! Aut autem deserunt et, sequi suscipit vero voluptates? Dolorum itaque maxime praesentium suscipit vitae.</span><span>Consectetur deleniti doloribus, explicabo inventore laudantium modi neque nihil possimus quibusdam quis quisquam sed vel voluptatibus! Consequuntur, in ipsum iure magni modi nemo nulla placeat ullam vero. Ipsa omnis, voluptatum?</span><span>A assumenda atque culpa distinctio eligendi enim, facilis illo obcaecati placeat recusandae! A, architecto consectetur earum ipsa nam odio odit quae quas quibusdam sit? Ab commodi iure maiores sint velit.</span><span>A accusantium adipisci at atque autem deleniti dolores eius id inventore labore laboriosam libero necessitatibus non officiis porro provident quasi ratione reiciendis reprehenderit sequi similique, tempora tempore temporibus ut voluptatibus.</span><span>Distinctio est eum ipsa itaque neque! Ab architecto asperiores atque libero nemo non nulla ullam voluptate. Aut laborum porro quibusdam ratione? Distinctio, eligendi eos facilis itaque iusto nostrum praesentium repellat.</span><span>A, aliquid at autem consequuntur, cum cumque dolor doloremque impedit ipsa ipsam iusto libero minus, nihil non quasi recusandae sequi temporibus vel vero voluptas. Dolor molestiae rerum temporibus ullam vitae.</span><span>Beatae consequatur impedit natus velit. Distinctio ea illum in ipsa iste molestiae mollitia neque nesciunt nihil, nisi numquam, pariatur quam quasi quia quidem quos recusandae sapiente? Accusantium ipsum repellendus veritatis.</span><span>At fugiat laboriosam pariatur sit voluptatibus! Doloribus exercitationem facere iste nobis velit. Asperiores blanditiis delectus dolore eaque eius fugiat iste molestias soluta. Consequatur debitis expedita id molestiae nulla, qui repudiandae.</span><span>Accusantium, aliquam aperiam culpa distinctio dolore, et excepturi labore, nulla obcaecati praesentium provident quae quaerat quas quia recusandae repellendus sapiente unde vero. Explicabo facilis, harum ipsam mollitia odit similique temporibus.</span></p>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-dark" (click)="activeModal.dismiss()">Закрыть</button>
-    <button type="button" class="btn btn-primary" (click)="activeModal.close('Сохранить')">Сохранить</button>
-</div>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="modal-header">
+        <h4 class="modal-title">Добавление смены</h4>
+        <button type="button" class="close" (click)="activeModal.dismiss()">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-row form-row__select">
+            <label for="craneType">Тип крана:</label>
+            <select formControlName="craneType"
+                    id="craneType"
+                    class="custom-select"
+                    [class.is-invalid]="form.get('craneType').invalid && form.get('craneType').touched"
+            >
+                <option value="null">Выберите тип крана...</option>
+                <option value="0">Одинарный</option>
+                <option value="1">Двойной</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="form.get('craneType').hasError('required')">
+                Обязательное поле
+            </div>
+        </div>
+        <div class="form-row">
+            <label for="fullname">ФИО ответственного:</label>
+            <input formControlName="fullname"
+                type="text"
+                id="fullname"
+                class="form-control"
+                placeholder="Иванов И.И."
+                [class.is-invalid]="form.get('fullname').invalid && form.get('fullname').touched"
+            >
+            <div class="invalid-feedback" *ngIf="form.get('fullname').hasError('required')">
+                Обязательное поле
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-dark" (click)="activeModal.dismiss()">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+</form>

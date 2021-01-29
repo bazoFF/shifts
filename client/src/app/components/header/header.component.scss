@@ -1,17 +1,19 @@
 .header {
   display: flex;
-  padding: 5px 15px;
+  padding: 10px 25px;
   align-items: center;
   border-bottom: 3px solid black;
   &__title {
     width: 100%;
-    font-size: 35px;
+    font-size: 33px;
     text-align: center;
   }
   &__button {
-    margin: 0 25px;
+    width: 37px;
+    height: 37px;
+    margin-left: 10px;
     &-icon {
-      font-size: 40px;
+      font-size: 37px;
     }
   }
 }

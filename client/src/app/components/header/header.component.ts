@@ -13,6 +13,8 @@ export class HeaderComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+    // todo: delete
+    this.openShiftCreate();
   }
 
   openShiftCreate(): void {

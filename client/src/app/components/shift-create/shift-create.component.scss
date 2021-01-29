@@ -1,4 +1,6 @@
-.shift-create {
-  width: 100%;
-  height: 2000px;
+.form-row {
+  padding: 10px 25px;
+  &__select {
+    max-width: 280px;
+  }
 }
