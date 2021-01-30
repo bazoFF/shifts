@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MainComponent } from './components/main/main.component';
+import { ShiftPageComponent } from './components/shift/smart/shift-page/shift-page.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
+    component: ShiftPageComponent
   }
 ];
 

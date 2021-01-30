@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CraneTypeEnum } from '../../models/crane';
-import { FullNameValidator } from '../../validators/full-name/full-name.validator';
-import { DateTimeValidator } from '../../validators/date-time/date-time.validator';
-import { StartEndValidator } from '../../validators/start-end/start-end.validator';
+import { CraneTypeEnum } from '../../../../models/crane';
+import { FullNameValidator } from '../../../../validators/full-name/full-name.validator';
+import { DateTimeValidator } from '../../../../validators/date-time/date-time.validator';
+import { StartEndValidator } from '../../../../validators/start-end/start-end.validator';
 
 @Component({
   selector: 'app-shift-create',
@@ -30,6 +30,7 @@ export class ShiftCreateComponent implements OnInit {
         end: this.form.get('end').value,
       };
 
+      // todo: send create request
       console.log(dto);
 
       this.activeModal.close();

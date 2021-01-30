@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-center p-3">
+    <table class="table table-bordered table-striped shadow">
+        <thead>
+            <tr>
+                <th class="text-nowrap" scope="col">ФИО</th>
+                <th class="text-nowrap" scope="col">Начало</th>
+                <th class="text-nowrap" scope="col">Окончание</th>
+                <th class="text-nowrap" scope="col">Тип крана</th>
+                <th class="text-nowrap" scope="col">Погружено тонн</th>
+                <th class="text-nowrap" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let shift of shifts">
+                <td>{{shift.fullName}}</td>
+                <td>{{shift.startDate | date:'d/MM/y H:mm'}}</td>
+                <td>{{shift.endDate | date:'d/MM/y H:mm'}}</td>
+                <td>{{shift.craneType}}</td>
+                <td>{{shift.totalLoaded}}</td>
+                <td>
+                    <div class="d-flex justify-content-center flex-nowrap">
+                        <button class="mr-2" (click)="edit(shift.id)">
+                            <span class=" material-icons">edit</span>
+                        </button>
+                        <button (click)="delete(shift.id)">
+                            <span class="header__button-icon material-icons">delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

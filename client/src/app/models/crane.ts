@@ -1,4 +1,4 @@
 export enum CraneTypeEnum {
-    Single,
-    Double
+    Single = 'Одинарный',
+    Double = 'Двойной'
 }
