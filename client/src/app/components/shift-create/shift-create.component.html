@@ -47,6 +47,9 @@
                        placeholder="01/01/2021 08:00"
                        [class.is-invalid]="form.get('start').invalid && form.get('start').touched"
                 >
+                <div class="invalid-feedback" *ngIf="form.get('start').hasError('required')">
+                    Обязательное поле
+                </div>
                 <div class="invalid-feedback" *ngIf="form.get('start').hasError('format')">
                     Неверный формат (например, 01/01/2021 08:00)
                 </div>
@@ -60,6 +63,9 @@
                        placeholder="01/01/2021 19:00"
                        [class.is-invalid]="form.get('end').invalid && form.get('end').touched"
                 >
+                <div class="invalid-feedback" *ngIf="form.get('end').hasError('required')">
+                    Обязательное поле
+                </div>
                 <div class="invalid-feedback" *ngIf="form.get('end').hasError('format')">
                     Неверный формат (например, 01/01/2021 19:00)
                 </div>
