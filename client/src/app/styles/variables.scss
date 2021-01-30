@@ -1,6 +1,6 @@
 $font-default: 'Roboto', 'Helvetica Neue', sans-serif;
 
-$xl: '(max-width : 1600px)';
-$lg: '(max-width : 1200px)';
-$md: '(max-width : 992px)';
-$xs: '(max-width : 576px)';
+$xl: '(min-width : 1200px)';
+$lg: '(min-width : 992px)';
+$md: '(min-width : 768px)';
+$sm: '(min-width : 576px)';

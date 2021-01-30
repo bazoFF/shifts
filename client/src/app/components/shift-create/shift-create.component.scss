@@ -1,6 +1,18 @@
+@import "../../styles/variables";
+
 .form-row {
-  padding: 10px 25px;
+  padding: 10px 0;
+  @media #{$sm} {
+    padding: 10px 15px;
+  }
   &__select {
     max-width: 280px;
+  }
+  &__date {
+    margin-bottom: 20px;
+    &_label {
+      white-space: nowrap;
+      margin-bottom: 6px;
+    }
   }
 }

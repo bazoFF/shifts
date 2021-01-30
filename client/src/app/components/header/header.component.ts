@@ -19,8 +19,5 @@ export class HeaderComponent implements OnInit {
 
   openShiftCreate(): void {
     this.modalRef = this.modalService.open(ShiftCreateComponent, {scrollable: true, centered: true, size: 'xl'});
-    this.modalRef.result.then((dto) => {
-      console.log(dto);
-    }, () => {});
   }
 }
