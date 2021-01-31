@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CraneTypeEnum } from '../../../../models/crane';
 import { FullNameValidator } from '../../../../validators/full-name/full-name.validator';
-import { DateTimeValidator } from '../../../../validators/date-time/date-time.validator';
 import { StartEndValidator } from '../../../../validators/start-end/start-end.validator';
 import { ShiftService } from '../../../../services/shift.service';
 import { IShift, IShiftListItem } from '../../../../models/shift';
@@ -14,6 +13,7 @@ import { IShift, IShiftListItem } from '../../../../models/shift';
   styleUrls: ['./shift-create.component.scss']
 })
 export class ShiftCreateComponent implements OnInit {
+  loading: boolean = false;
   form: FormGroup;
   craneTypes = CraneTypeEnum;
   shift: IShiftListItem = null;
@@ -42,7 +42,15 @@ export class ShiftCreateComponent implements OnInit {
         works: []
       };
 
-      await this.shiftService.create(dto).toPromise();
+      this.loading = true;
+
+      if (this.shift) {
+        await this.shiftService.update({...dto, id: this.shift.id}).toPromise();
+      } else {
+        await this.shiftService.create(dto).toPromise();
+      }
+
+      this.loading = false;
       this.activeModal.close();
     } else {
       this.form.markAllAsTouched();
@@ -53,19 +61,11 @@ export class ShiftCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       craneType: ['', Validators.required],
       fullName: ['', [Validators.required, FullNameValidator.createValidator()]],
-      startDate: ['', [Validators.required, DateTimeValidator.createValidator()]],
+      startDate: ['', Validators.required],
     });
 
-    this.form.addControl('endDate', new FormControl('', [
-      Validators.required,
-      DateTimeValidator.createValidator(),
-      StartEndValidator.createValidator(this.form.get('startDate'))
-    ]));
-
-    this.form.get('startDate').valueChanges.subscribe((v) => {
-      console.log(v);
-      this.form.get('endDate').updateValueAndValidity();
-    });
+    this.form.addControl('endDate', new FormControl('', StartEndValidator.createValidator(this.form.get('startDate'))));
+    this.form.get('startDate').valueChanges.subscribe(() => this.form.get('endDate').updateValueAndValidity());
   }
 
   private bindForm() {

@@ -38,47 +38,38 @@
             </div>
         </div>
         <div class="form-row flex-wrap">
-            <app-date-time-picker formControlName="startDate"></app-date-time-picker>
-<!--            <app-date-time-picker formControlName="endDate"></app-date-time-picker>-->
-<!--            <div class="form-row__date mr-4">-->
-<!--                <label for="startDate" class="form-row__date_label">Дата начала</label>-->
-<!--                <input formControlName="startDate"-->
-<!--                       type="datetime-local"-->
-<!--                       id="startDate"-->
-<!--                       class="form-control"-->
-<!--                       placeholder="01/01/2021 08:00"-->
-<!--                       [class.is-invalid]="form.get('startDate').invalid && form.get('startDate').touched"-->
-<!--                >-->
-<!--                <div class="invalid-feedback" *ngIf="form.get('startDate').hasError('required')">-->
-<!--                    Обязательное поле-->
-<!--                </div>-->
-<!--                <div class="invalid-feedback" *ngIf="form.get('startDate').hasError('format')">-->
-<!--                    Неверный формат (например, 01/01/2021 08:00)-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-row__date">-->
-<!--                <label for="endDate" class="form-row__date_label">Дата окончания</label>-->
-<!--                <input formControlName="endDate"-->
-<!--                       type="datetime-local"-->
-<!--                       id="endDate"-->
-<!--                       class="form-control"-->
-<!--                       placeholder="01/01/2021 19:00"-->
-<!--                       [class.is-invalid]="form.get('endDate').invalid && form.get('endDate').touched"-->
-<!--                >-->
-<!--                <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('required')">-->
-<!--                    Обязательное поле-->
-<!--                </div>-->
-<!--                <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('format')">-->
-<!--                    Неверный формат (например, 01/01/2021 19:00)-->
-<!--                </div>-->
-<!--                <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('startEnd')">-->
-<!--                    Дата начала не может быть больше даты окончания-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="form-row__date mr-4">
+                <label for="startDate" class="form-row__date_label">Дата начала</label>
+                <app-date-time-picker id="startDate"
+                                      formControlName="startDate"
+                                      [invalid]="form.get('startDate').invalid && form.get('startDate').touched"
+                ></app-date-time-picker>
+                <div class="invalid-feedback" *ngIf="form.get('startDate').hasError('required')">
+                    Обязательное поле
+                </div>
+            </div>
+            <div class="form-row__date">
+                <label for="endDate" class="form-row__date_label">Дата окончания</label>
+                <app-date-time-picker id="endDate"
+                                      formControlName="endDate"
+                                      [invalid]="form.get('endDate').invalid && form.get('endDate').touched"
+                ></app-date-time-picker>
+                <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('required')">
+                    Обязательное поле
+                </div>
+                <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('startEnd')">
+                    Дата начала не может быть больше даты окончания
+                </div>
+            </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-dark" (click)="activeModal.dismiss()">Закрыть</button>
-    <button type="button" class="btn btn-primary" (click)="submit()">Сохранить</button>
+    <button type="button" class="btn btn-primary" (click)="submit()">
+        <span>Сохранить</span>
+        <span class="spinner spinner-border text-light" *ngIf="loading">
+            <span class="sr-only">Loading...</span>
+        </span>
+    </button>
 </div>

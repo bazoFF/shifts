@@ -1,13 +1,13 @@
-<div class="d-flex justify-content-center p-4">
+<div class="shifts-list">
     <table class="table table-bordered table-striped shadow">
         <thead>
             <tr>
-                <th class="text-nowrap" scope="col">ФИО</th>
-                <th class="text-nowrap" scope="col">Начало</th>
-                <th class="text-nowrap" scope="col">Окончание</th>
-                <th class="text-nowrap" scope="col">Тип крана</th>
-                <th class="text-nowrap" scope="col">Погружено тонн</th>
-                <th class="text-nowrap" scope="col"></th>
+                <th >ФИО</th>
+                <th>Начало</th>
+                <th>Окончание</th>
+                <th>Тип крана</th>
+                <th>Погружено тонн</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +24,16 @@
                     </div>
                 </td>
             </tr>
+            <tr *ngIf="shifts.length === 0">
+                <td [colSpan]="6">
+                    <div class="shifts-list__no-content">
+                        <p>Смены отсутствуют</p>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
+<!--    <div class="shifts-list__no-content" *ngIf="shifts.length === 0">-->
+<!--        <p>Смены отсутствуют</p>-->
+<!--    </div>-->
 </div>

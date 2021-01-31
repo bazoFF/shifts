@@ -1,6 +1,16 @@
-import { ChangeDetectorRef, Component, forwardRef, OnInit } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import {
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  forwardRef,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges, ViewChild
+} from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {NgbCalendar, NgbDate, NgbDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-date-time-picker',
@@ -14,19 +24,33 @@ import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
     }
   ]
 })
-export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
+export class DateTimePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
+  @HostBinding('class.is-invalid') isInvalidClass = false;
+  @ViewChild(NgbDatepicker, {static: true}) datepicker: NgbDatepicker;
+  @Input() invalid: boolean = false;
+
   form: FormGroup;
   value: Date;
-  picking: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef) { }
+  test() {
+    console.log('test');
+  }
+
+  constructor(private formBuilder: FormBuilder, private datePipe: DatePipe, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.buildForm();
   }
 
-  togglePicker() {
-    this.picking = !this.picking;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.invalid) {
+      this.isInvalidClass = changes.invalid.currentValue;
+    }
+  }
+
+  ngAfterViewInit() {
+    // this.datepicker.navigateTo();
+    this.cdRef.detectChanges();
   }
 
   writeValue(value?: string) {
@@ -34,7 +58,7 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
       this.value = new Date(value);
       this.form.get('date').setValue(new NgbDate(
           this.value.getFullYear(),
-          this.value.getMonth() + 1,
+          this.value.getMonth(),
           this.value.getDate()
       ));
       this.form.get('time').setValue({
@@ -42,9 +66,10 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
         minute: this.value.getMinutes(),
         second: 0
       });
-    }
+      this.cdRef.detectChanges();
 
-    this._onChange(this.value);
+      this.changeValue();
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -57,45 +82,48 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      date: [null, Validators.required],
-      time: [null, Validators.required]
+      date: [null],
+      time: [null],
+      value: [null]
     });
 
-    this.subscribeToChanges();
+    this.subscribeToDateChanges();
+    this.subscribeToTimeChanges();
   }
 
-  private subscribeToChanges() {
+  private subscribeToDateChanges() {
     this.form.get('date').valueChanges.subscribe(date => {
       if (!this.value) {
         this.value = new Date();
+        this.value.setHours(0, 0, 0);
       }
 
-      this.value.setDate(date ? date.day : null);
-      this.value.setMonth(date ? date.month - 1 : null);
-      this.value.setFullYear(date ? date.year : null);
-
-      this.cdRef.detectChanges();
-      this._onChange(this.value);
+      this.value.setFullYear(date.year, date.month, date.day);
+      this.changeValue();
     });
+  }
 
+  private subscribeToTimeChanges() {
     this.form.get('time').valueChanges.subscribe(time => {
       if (!this.value) {
         this.value = new Date();
       }
 
-      this.value.setHours(time ? time.hour : null);
-      this.value.setMinutes(time ? time.minute : null, 0);
-
-      this.cdRef.detectChanges();
-      this._onChange(this.value);
+      this.value.setHours(time.hour, time.minute, 0);
+      this.changeValue();
     });
   }
 
-  private _onTouched = () => {
-    //
+  private changeValue() {
+    this._onChange(this.value);
+    this.form.get('value').setValue(this.datePipe.transform(this.value, 'd/MM/y H:mm'));
   }
 
-  private _onChange = (result: Date) => {
-    //
+  public touch() {
+    this._onTouched();
   }
+
+  private _onTouched() { }
+
+  private _onChange(result: Date) { }
 }

@@ -10,27 +10,29 @@ import { IShiftListItem } from '../../../../models/shift';
   styleUrls: ['./shift-page.component.scss']
 })
 export class ShiftPageComponent implements OnInit {
-  shifts: IShiftListItem[];
+  shifts: IShiftListItem[] = [];
   modalRef: NgbModalRef;
   loading: boolean;
+  initiating: boolean;
 
   constructor(private modalService: NgbModal, private shiftService: ShiftService) { }
 
   ngOnInit() {
+    this.initiating = true;
     this.load();
-    this.openShiftCreate();
   }
 
   load() {
     this.loading = true;
-    this.shiftService.getAll().subscribe((shifts) => {
+    this.shiftService.read().subscribe((shifts) => {
       this.shifts = shifts;
       this.loading = false;
+      this.initiating = false;
     });
   }
 
   openShiftCreate(shift: IShiftListItem = null): void {
-    this.modalRef = this.modalService.open(ShiftCreateComponent, {scrollable: true, centered: true, size: 'xl'});
+    this.modalRef = this.modalService.open(ShiftCreateComponent, {centered: true, size: 'xl'});
 
     if (shift !== null) {
       this.modalRef.componentInstance.shift = shift;
@@ -41,11 +43,12 @@ export class ShiftPageComponent implements OnInit {
     }).catch(() => { });
   }
 
-  // edit(id: number) {
-  //   console.log('Open edit ID: ' + id);
-  // }
+  edit(shift: IShiftListItem) {
+    this.openShiftCreate(shift);
+  }
 
   delete(id: number) {
+    this.loading = true;
     this.shiftService.delete(id).subscribe(() => {
       this.load();
     });

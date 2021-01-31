@@ -1,22 +1,30 @@
 <form [formGroup]="form">
     <div class="date-time">
-        <div class="input-group">
-            <input [value]="value | date:'d/MM/y H:mm'"
-                   (click)="togglePicker()"
-                   class="form-control date-time__input"
+        <ng-template #picker>
+            <div class="date-time__picker">
+                <ngb-datepicker formControlName="date" [startDate]="form.get('date').value"></ngb-datepicker>
+                <ngb-timepicker formControlName="time"></ngb-timepicker>
+            </div>
+        </ng-template>
+        <div class="input-group"
+             popoverClass="shadow border-0"
+             [ngbPopover]="picker"
+             (hidden)="touch()"
+             [autoClose]="'outside'"
+             placement="top"
+        >
+            <input class="form-control date-time__input"
+                   [class.is-invalid]="invalid"
                    placeholder="Выберите дату..."
+                   formControlName="value"
                    readonly
             >
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary material-icons date-icon"
-                        (click)="togglePicker()"
+                        [class.btn-outline-danger]="invalid"
                         type="button"
                 >date_range</button>
             </div>
-        </div>
-        <div class="date-time__picker" *ngIf="picking">
-            <ngb-datepicker formControlName="date"></ngb-datepicker>
-            <ngb-timepicker formControlName="time"></ngb-timepicker>
         </div>
     </div>
 </form>

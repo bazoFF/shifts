@@ -12,7 +12,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import localeRu from '@angular/common/locales/ru';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { LoadingComponent } from './components/shared/dumb/loading/loading.component';
 import { DateTimePickerComponent } from './components/shared/dumb/date-time-picker/date-time-picker.component';
 
@@ -35,11 +35,14 @@ registerLocaleData(localeRu, 'ru');
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-        InMemoryDataService, { dataEncapsulation: false, delay: 700 }
+        InMemoryDataService, { dataEncapsulation: false, delay: 800 }
     )
   ],
   entryComponents: [ShiftCreateComponent],
-  providers: [{ provide: LOCALE_ID, useValue: 'ru' }],
+  providers: [
+      DatePipe,
+      { provide: LOCALE_ID, useValue: 'ru' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
