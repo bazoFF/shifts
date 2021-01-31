@@ -5,6 +5,8 @@ import { CraneTypeEnum } from '../../../../models/crane';
 import { FullNameValidator } from '../../../../validators/full-name/full-name.validator';
 import { DateTimeValidator } from '../../../../validators/date-time/date-time.validator';
 import { StartEndValidator } from '../../../../validators/start-end/start-end.validator';
+import { ShiftService } from '../../../../services/shift.service';
+import { IShift, IShiftListItem } from '../../../../models/shift';
 
 @Component({
   selector: 'app-shift-create',
@@ -14,25 +16,33 @@ import { StartEndValidator } from '../../../../validators/start-end/start-end.va
 export class ShiftCreateComponent implements OnInit {
   form: FormGroup;
   craneTypes = CraneTypeEnum;
+  shift: IShiftListItem = null;
 
-  constructor(public activeModal: NgbActiveModal, private formBuilder: FormBuilder) { }
+  constructor(
+      public activeModal: NgbActiveModal,
+      private formBuilder: FormBuilder,
+      private shiftService: ShiftService
+  ) { }
 
   ngOnInit() {
     this.buildForm();
+
+    if (this.shift) {
+      this.bindForm();
+    }
   }
 
-  submit() {
+  async submit() {
     if (this.form.valid) {
-      const dto = {
+      const dto: IShift = {
         craneType: this.form.get('craneType').value,
         fullName: this.form.get('fullName').value,
-        start: this.form.get('start').value,
-        end: this.form.get('end').value,
+        startDate: this.form.get('startDate').value,
+        endDate: this.form.get('endDate').value,
+        works: []
       };
 
-      // todo: send create request
-      console.log(dto);
-
+      await this.shiftService.create(dto).toPromise();
       this.activeModal.close();
     } else {
       this.form.markAllAsTouched();
@@ -43,17 +53,26 @@ export class ShiftCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       craneType: ['', Validators.required],
       fullName: ['', [Validators.required, FullNameValidator.createValidator()]],
-      start: ['', [Validators.required, DateTimeValidator.createValidator()]],
+      startDate: ['', [Validators.required, DateTimeValidator.createValidator()]],
     });
 
-    this.form.addControl('end', new FormControl('', [
+    this.form.addControl('endDate', new FormControl('', [
       Validators.required,
       DateTimeValidator.createValidator(),
-      StartEndValidator.createValidator(this.form.get('start'))
+      StartEndValidator.createValidator(this.form.get('startDate'))
     ]));
 
-    this.form.get('start').valueChanges.subscribe(() => {
-      this.form.get('end').updateValueAndValidity();
+    this.form.get('startDate').valueChanges.subscribe((v) => {
+      console.log(v);
+      this.form.get('endDate').updateValueAndValidity();
     });
+  }
+
+  private bindForm() {
+    this.form.get('craneType').setValue(this.shift.craneType);
+    this.form.get('craneType').disable();
+    this.form.get('fullName').setValue(this.shift.fullName);
+    this.form.get('startDate').setValue(this.shift.startDate);
+    this.form.get('endDate').setValue(this.shift.endDate);
   }
 }

@@ -13,10 +13,8 @@
     width: 37px;
     height: 37px;
     margin-left: 10px;
-    &-icon {
-      font-size: 37px;
-    }
-    &-icon:hover {
+    font-size: 37px;
+    &:hover {
       transition: text-shadow 200ms;
       text-shadow: 1px 1px 1px lightgray;
     }

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ShiftService } from '../../../../services/shift.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IShiftListItem } from '../../../../models/shift';
 
 @Component({
@@ -8,27 +7,12 @@ import { IShiftListItem } from '../../../../models/shift';
   styleUrls: ['./shifts-list.component.scss']
 })
 export class ShiftsListComponent implements OnInit {
-  shifts: IShiftListItem[];
+  @Input() shifts: IShiftListItem[];
 
-  constructor(private shiftsService: ShiftService) { }
+  @Output() edit: EventEmitter<IShiftListItem> = new EventEmitter<IShiftListItem>();
+  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
-  ngOnInit() {
-    this.load();
-  }
+  constructor() { }
 
-  load() {
-    this.shiftsService.getAll().subscribe((shifts) => {
-      this.shifts = shifts;
-    });
-  }
-
-  edit(id: number) {
-    console.log('Open edit ID: ' + id);
-  }
-
-  delete(id: number) {
-    this.shiftsService.delete(id).subscribe(() => {
-      this.load();
-    });
-  }
+  ngOnInit() { }
 }

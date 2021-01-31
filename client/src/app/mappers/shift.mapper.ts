@@ -8,7 +8,7 @@ export class ShiftMapper {
     static mapToShiftListItem(item: IShiftDb): IShiftListItem {
         return {
             ...item,
-            totalLoaded: item.works.map(w => w.loaded).reduce((a, b) => a + b)
+            totalLoaded: item.works.length > 0 ? item.works.map(w => w.loaded).reduce((a, b) => a + b) : 0
         };
     }
 }

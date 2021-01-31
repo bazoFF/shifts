@@ -1,9 +1,12 @@
-<div class="">
+<div class="" >
     <header class="header">
         <h1 class="header__title">Список смен</h1>
-        <button class="header__button" (click)="openShiftCreate()">
-            <span class="header__button-icon material-icons">add</span>
-        </button>
+        <button class="header__button material-icons" (click)="openShiftCreate()">add</button>
     </header>
-    <app-shifts-list></app-shifts-list>
+    <app-shifts-list [shifts]="shifts"
+                     (edit)="openShiftCreate($event)"
+                     (delete)="delete($event)"
+    ></app-shifts-list>
 </div>
+
+<app-loading *ngIf="loading"></app-loading>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { IShift, IShiftDb } from '../models/shift';
+import { IShiftDb } from '../models/shift';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,15 @@ export class InMemoryDataService implements InMemoryDbService {
   constructor() { }
 
   createDb() {
-    const data: IShift[] = [];
+    const data: IShiftDb[] = [];
 
     for (let i = 0; i < 5; i++) {
       data.push({
+        id: i + 1,
         craneType: 'Двойной',
         fullName: 'Базов Р.В.',
-        startDate: '01/01/2021 08:00',
-        endDate: '01/01/2021 19:30',
+        startDate: new Date('01/01/2021 08:00'),
+        endDate: new Date('01/01/2021 19:30'),
         works: [{
           craneType: 'Двойной',
           loaded: 150,

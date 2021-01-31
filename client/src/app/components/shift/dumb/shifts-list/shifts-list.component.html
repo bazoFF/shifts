@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center p-3">
+<div class="d-flex justify-content-center p-4">
     <table class="table table-bordered table-striped shadow">
         <thead>
             <tr>
@@ -16,15 +16,11 @@
                 <td>{{shift.startDate | date:'d/MM/y H:mm'}}</td>
                 <td>{{shift.endDate | date:'d/MM/y H:mm'}}</td>
                 <td>{{shift.craneType}}</td>
-                <td>{{shift.totalLoaded}}</td>
+                <td>{{shift.totalLoaded}} т</td>
                 <td>
                     <div class="d-flex justify-content-center flex-nowrap">
-                        <button class="mr-2" (click)="edit(shift.id)">
-                            <span class=" material-icons">edit</span>
-                        </button>
-                        <button (click)="delete(shift.id)">
-                            <span class="header__button-icon material-icons">delete</span>
-                        </button>
+                        <button class="mr-2 material-icons" (click)="edit.emit(shift)">edit</button>
+                        <button class="material-icons" (click)="delete.emit(shift.id)">delete</button>
                     </div>
                 </td>
             </tr>

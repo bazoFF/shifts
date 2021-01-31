@@ -1,8 +1,8 @@
 export interface IShift {
     craneType: string;
     fullName: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     works: IShiftWork[];
 }
 
