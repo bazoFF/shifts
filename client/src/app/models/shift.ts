@@ -7,7 +7,8 @@ export interface IShift {
 }
 
 export interface IShiftWork {
-    craneType: string;
+    crane: number;
+    track: number;
     loaded: number;
     unloaded: number;
 }

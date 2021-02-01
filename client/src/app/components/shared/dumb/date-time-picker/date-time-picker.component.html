@@ -7,11 +7,11 @@
             </div>
         </ng-template>
         <div class="input-group"
-             popoverClass="shadow border-0"
+             popoverClass="shadow border-0 "
              [ngbPopover]="picker"
              (hidden)="touch()"
-             [autoClose]="'outside'"
-             placement="top"
+             autoClose="outside"
+             placement="bottom"
         >
             <input class="form-control date-time__input"
                    [class.is-invalid]="invalid"

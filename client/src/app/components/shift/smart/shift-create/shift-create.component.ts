@@ -33,6 +33,26 @@ export class ShiftCreateComponent implements OnInit {
     }
   }
 
+  get totalLoaded() {
+    return this.getTotal('loaded');
+  }
+
+  get totalUnloaded() {
+    return this.getTotal('unloaded');
+  }
+
+  private getTotal(type: string) {
+    const works = this.form.get('works').value;
+
+    if (works.length === 0) {
+      return 0;
+    }
+
+    const total = works.map(work => work[type]).reduce((a, b) => a + b);
+
+    return total ? total : 0;
+  }
+
   async submit() {
     if (this.form.valid) {
       const dto: IShift = {
@@ -40,13 +60,13 @@ export class ShiftCreateComponent implements OnInit {
         fullName: this.form.get('fullName').value,
         startDate: this.form.get('startDate').value,
         endDate: this.form.get('endDate').value,
-        works: []
+        works: this.form.get('works').value,
       };
 
       this.loading = true;
 
       if (this.shift) {
-        await this.shiftService.update({...dto, id: this.shift.id}).toPromise();
+        await this.shiftService.update({ id: this.shift.id, ...dto }).toPromise();
       } else {
         await this.shiftService.create(dto).toPromise();
       }
@@ -58,13 +78,21 @@ export class ShiftCreateComponent implements OnInit {
     }
   }
 
-  getWorks(craneType: number): IShiftWork[] {
-    return this.form.get('works').value.filter(work => work.craneType === craneType);
+  getWorks(crane: number): IShiftWork[] {
+    return this.form.get('works').value.filter(work => work.crane === crane);
   }
 
-  private buildForm() {
+  setWorks(works: IShiftWork[], crane: number): void {
+    // console.log(works, this.form.get('works').value.filter(work => work.crane !== crane));
+    this.form.get('works').setValue([
+      ...works,
+      ...this.form.get('works').value.filter(work => work.crane !== crane)
+    ]);
+  }
+
+  private buildForm(): void {
     this.form = this.formBuilder.group({
-      craneType: [this.craneTypes.Single, Validators.required],
+      craneType: ['', Validators.required],
       fullName: ['', [Validators.required, FullNameValidator.createValidator()]],
       startDate: ['', Validators.required],
       works: [[]]
@@ -74,12 +102,8 @@ export class ShiftCreateComponent implements OnInit {
     this.form.get('startDate').valueChanges.subscribe(() => this.form.get('endDate').updateValueAndValidity());
   }
 
-  private bindForm() {
-    this.form.get('craneType').setValue(this.shift.craneType);
+  private bindForm(): void {
+    this.form.patchValue(this.shift);
     this.form.get('craneType').disable();
-    this.form.get('fullName').setValue(this.shift.fullName);
-    this.form.get('startDate').setValue(this.shift.startDate);
-    this.form.get('endDate').setValue(this.shift.endDate);
-    this.form.get('works').setValue(this.shift.works);
   }
 }

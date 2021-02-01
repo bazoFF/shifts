@@ -1,15 +1,16 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  ChangeDetectorRef,
   Component,
   forwardRef,
   HostBinding,
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges, ViewChild
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {NgbCalendar, NgbDate, NgbDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -24,19 +25,18 @@ import { DatePipe } from '@angular/common';
     }
   ]
 })
-export class DateTimePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
+export class DateTimePickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   @HostBinding('class.is-invalid') isInvalidClass = false;
-  @ViewChild(NgbDatepicker, {static: true}) datepicker: NgbDatepicker;
   @Input() invalid: boolean = false;
 
   form: FormGroup;
   value: Date;
 
-  test() {
-    console.log('test');
-  }
-
-  constructor(private formBuilder: FormBuilder, private datePipe: DatePipe, private cdRef: ChangeDetectorRef) { }
+  constructor(
+      private formBuilder: FormBuilder,
+      private datePipe: DatePipe,
+      private cdRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.buildForm();
@@ -48,25 +48,21 @@ export class DateTimePickerComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
 
-  ngAfterViewInit() {
-    // this.datepicker.navigateTo();
-    this.cdRef.detectChanges();
-  }
-
   writeValue(value?: string) {
     if (value) {
       this.value = new Date(value);
+
       this.form.get('date').setValue(new NgbDate(
           this.value.getFullYear(),
           this.value.getMonth(),
           this.value.getDate()
       ));
+
       this.form.get('time').setValue({
         hour: this.value.getHours(),
         minute: this.value.getMinutes(),
         second: 0
       });
-      this.cdRef.detectChanges();
 
       this.changeValue();
     }
@@ -98,15 +94,20 @@ export class DateTimePickerComponent implements OnInit, OnChanges, AfterViewInit
         this.value.setHours(0, 0, 0);
       }
 
-      this.value.setFullYear(date.year, date.month, date.day);
+      this.value.setFullYear(date.year, date.month - 1, date.day);
       this.changeValue();
     });
   }
 
   private subscribeToTimeChanges() {
-    this.form.get('time').valueChanges.subscribe(time => {
+    this.form.get('time').valueChanges.subscribe((time) => {
       if (!this.value) {
         this.value = new Date();
+      }
+
+      if (!time) {
+        time = { hour: 0, minute: 0 };
+        this.form.get('time').patchValue(time);
       }
 
       this.value.setHours(time.hour, time.minute, 0);
@@ -117,6 +118,7 @@ export class DateTimePickerComponent implements OnInit, OnChanges, AfterViewInit
   private changeValue() {
     this._onChange(this.value);
     this.form.get('value').setValue(this.datePipe.transform(this.value, 'd/MM/y H:mm'));
+    this.cdRef.detectChanges();
   }
 
   public touch() {

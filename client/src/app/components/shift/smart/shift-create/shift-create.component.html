@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Добавление смены</h4>
+    <h4 class="modal-title">{{shift ? 'Изменение' : 'Добавление'}} смены</h4>
     <button type="button" class="close" (click)="activeModal.dismiss()">
         <span class="material-icons">close</span>
     </button>
@@ -64,13 +64,17 @@
         </div>
         <ng-container [ngSwitch]="form.get('craneType').value">
             <ng-container *ngSwitchCase="craneTypes.Single">
-                <app-shift-work header="Кран" [works]="getWorks(cranes.Single)"></app-shift-work>
+                <app-shift-work header="Кран" [works]="getWorks(cranes.Single)" (worksChange)="setWorks($event, cranes.Single)" [crane]="cranes.Single"></app-shift-work>
             </ng-container>
             <ng-container *ngSwitchCase="craneTypes.Double">
-                <app-shift-work header="1-й кран" [works]="getWorks(cranes.Double1st)"></app-shift-work>
-                <app-shift-work header="2-й кран" [works]="getWorks(cranes.Double2nd)"></app-shift-work>
+                <app-shift-work header="1-й кран" [works]="getWorks(cranes.Double1st)" (worksChange)="setWorks($event, cranes.Double1st)" [crane]="cranes.Double1st"></app-shift-work>
+                <app-shift-work header="2-й кран" [works]="getWorks(cranes.Double2nd)" (worksChange)="setWorks($event, cranes.Double2nd)" [crane]="cranes.Double2nd"></app-shift-work>
             </ng-container>
         </ng-container>
+        <div class="d-flex flex-column align-items-end mt-2" *ngIf="form.get('craneType').value">
+            <h4 class="shift-create__total"><span>Всего погружено</span> <span class="ml-2">{{ totalLoaded }} т</span></h4>
+            <h4 class="shift-create__total"><span>Всего выгружено</span> <span class="ml-2">{{ totalUnloaded }} т</span></h4>
+        </div>
     </form>
 </div>
 <div class="modal-footer">
@@ -78,7 +82,7 @@
     <button type="button" class="btn btn-primary" (click)="submit()">
         <span>Сохранить</span>
         <span class="spinner spinner-border text-light" *ngIf="loading">
-            <span class="sr-only">Loading...</span>
-        </span>
+        <span class="sr-only">Loading...</span>
+    </span>
     </button>
 </div>

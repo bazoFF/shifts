@@ -37,7 +37,7 @@ registerLocaleData(localeRu, 'ru');
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-        InMemoryDataService, { dataEncapsulation: false, delay: 800 }
+        InMemoryDataService, { dataEncapsulation: false, delay: 500 }
     )
   ],
   entryComponents: [ShiftCreateComponent],

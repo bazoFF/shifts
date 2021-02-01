@@ -22,3 +22,14 @@
   max-height: 20px;
   margin-left: 10px;
 }
+
+.shift-create {
+  &__total {
+    display: flex;
+    padding: 0 10px 10px 10px;
+    width: max-content;
+    justify-content: space-between;
+    font-size: 17px;
+    white-space: nowrap;
+  }
+}

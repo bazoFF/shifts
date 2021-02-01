@@ -1,11 +1,23 @@
 .shift-work {
-  padding: 0 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 10px 15px 10px;
   &__header {
     font-size: 23px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   &__delete {
     width: 40px;
     height: 40px;
   }
+  &__track {
+    min-width: 200px;
+  }
+  th {
+    text-align: center;
+  }
+  .option-disabled {
+    color: #c7c9c9;
+  }
 }
+
