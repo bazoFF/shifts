@@ -26,6 +26,9 @@ export class ShiftPageComponent implements OnInit {
     this.loading = true;
     this.shiftService.read().subscribe((shifts) => {
       this.shifts = shifts;
+
+      this.openShiftCreate(); // todo: remove
+
       this.loading = false;
       this.initiating = false;
     });

@@ -62,6 +62,15 @@
                 </div>
             </div>
         </div>
+        <ng-container [ngSwitch]="form.get('craneType').value">
+            <ng-container *ngSwitchCase="craneTypes.Single">
+                <app-shift-work header="Кран" [works]="getWorks(cranes.Single)"></app-shift-work>
+            </ng-container>
+            <ng-container *ngSwitchCase="craneTypes.Double">
+                <app-shift-work header="1-й кран" [works]="getWorks(cranes.Double1st)"></app-shift-work>
+                <app-shift-work header="2-й кран" [works]="getWorks(cranes.Double2nd)"></app-shift-work>
+            </ng-container>
+        </ng-container>
     </form>
 </div>
 <div class="modal-footer">

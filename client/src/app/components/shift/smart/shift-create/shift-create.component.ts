@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CraneTypeEnum } from '../../../../models/crane';
+import { CranesEnum, CraneTypeEnum } from '../../../../models/crane';
 import { FullNameValidator } from '../../../../validators/full-name/full-name.validator';
 import { StartEndValidator } from '../../../../validators/start-end/start-end.validator';
 import { ShiftService } from '../../../../services/shift.service';
-import { IShift, IShiftListItem } from '../../../../models/shift';
+import { IShift, IShiftListItem, IShiftWork } from '../../../../models/shift';
 
 @Component({
   selector: 'app-shift-create',
@@ -16,6 +16,7 @@ export class ShiftCreateComponent implements OnInit {
   loading: boolean = false;
   form: FormGroup;
   craneTypes = CraneTypeEnum;
+  cranes = CranesEnum;
   shift: IShiftListItem = null;
 
   constructor(
@@ -57,11 +58,16 @@ export class ShiftCreateComponent implements OnInit {
     }
   }
 
+  getWorks(craneType: number): IShiftWork[] {
+    return this.form.get('works').value.filter(work => work.craneType === craneType);
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
-      craneType: ['', Validators.required],
+      craneType: [this.craneTypes.Single, Validators.required],
       fullName: ['', [Validators.required, FullNameValidator.createValidator()]],
       startDate: ['', Validators.required],
+      works: [[]]
     });
 
     this.form.addControl('endDate', new FormControl('', StartEndValidator.createValidator(this.form.get('startDate'))));
@@ -74,5 +80,6 @@ export class ShiftCreateComponent implements OnInit {
     this.form.get('fullName').setValue(this.shift.fullName);
     this.form.get('startDate').setValue(this.shift.startDate);
     this.form.get('endDate').setValue(this.shift.endDate);
+    this.form.get('works').setValue(this.shift.works);
   }
 }

@@ -15,6 +15,7 @@ import localeRu from '@angular/common/locales/ru';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { LoadingComponent } from './components/shared/dumb/loading/loading.component';
 import { DateTimePickerComponent } from './components/shared/dumb/date-time-picker/date-time-picker.component';
+import { ShiftWorkComponent } from './components/shift/dumb/shift-work/shift-work.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -26,6 +27,7 @@ registerLocaleData(localeRu, 'ru');
     ShiftsListComponent,
     LoadingComponent,
     DateTimePickerComponent,
+    ShiftWorkComponent,
   ],
   imports: [
     BrowserModule,
