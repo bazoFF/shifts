@@ -54,7 +54,7 @@ export class DateTimePickerComponent implements OnInit, OnChanges, ControlValueA
 
       this.form.get('date').setValue(new NgbDate(
           this.value.getFullYear(),
-          this.value.getMonth(),
+          this.value.getMonth() + 1,
           this.value.getDate()
       ));
 

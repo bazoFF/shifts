@@ -19,7 +19,7 @@ export class StorageService {
   }
 
   public create(shift: IShiftDb): void {
-    this.storageSubject.next([...this.shifts, shift]);
+    this.storageSubject.next([...this.shifts.filter(v => v.id !== shift.id), shift]);
   }
 
   public read(): IShiftDb[] {
