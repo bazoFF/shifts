@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CranesEnum, CraneTypeEnum } from '../../../../models/crane';
@@ -22,7 +22,8 @@ export class ShiftCreateComponent implements OnInit {
   constructor(
       public activeModal: NgbActiveModal,
       private formBuilder: FormBuilder,
-      private shiftService: ShiftService
+      private shiftService: ShiftService,
+      private cdRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -41,19 +42,9 @@ export class ShiftCreateComponent implements OnInit {
     return this.getTotal('unloaded');
   }
 
-  private getTotal(type: string) {
-    const works = this.form.get('works').value;
-
-    if (works.length === 0) {
-      return 0;
-    }
-
-    const total = works.map(work => work[type]).reduce((a, b) => a + b);
-
-    return total ? total : 0;
-  }
-
   async submit() {
+    // this.form.get('works').updateValueAndValidity();
+
     if (this.form.valid) {
       const dto: IShift = {
         craneType: this.form.get('craneType').value,
@@ -83,7 +74,6 @@ export class ShiftCreateComponent implements OnInit {
   }
 
   setWorks(works: IShiftWork[], crane: number): void {
-    // console.log(works, this.form.get('works').value.filter(work => work.crane !== crane));
     this.form.get('works').setValue([
       ...works,
       ...this.form.get('works').value.filter(work => work.crane !== crane)
@@ -95,15 +85,37 @@ export class ShiftCreateComponent implements OnInit {
       craneType: ['', Validators.required],
       fullName: ['', [Validators.required, FullNameValidator.createValidator()]],
       startDate: ['', Validators.required],
+      endDate: [''],
       works: [[]]
     });
 
-    this.form.addControl('endDate', new FormControl('', StartEndValidator.createValidator(this.form.get('startDate'))));
-    this.form.get('startDate').valueChanges.subscribe(() => this.form.get('endDate').updateValueAndValidity());
+    this.form.get('startDate').valueChanges.subscribe(() => {
+      this.form.get('endDate').setValidators(StartEndValidator.createValidator(this.form.get('startDate')));
+      this.form.get('endDate').updateValueAndValidity();
+    });
+
+    this.form.get('endDate').valueChanges.subscribe((value) => {
+      if (value) {
+        this.form.get('works').setValidators(Validators.required);
+        this.form.get('works').updateValueAndValidity();
+      }
+    });
   }
 
   private bindForm(): void {
     this.form.patchValue(this.shift);
     this.form.get('craneType').disable();
+  }
+
+  private getTotal(type: string): number {
+    const works = this.form.get('works').value;
+
+    if (works.length === 0) {
+      return 0;
+    }
+
+    const total = works.map(work => work[type]).reduce((a, b) => a + b);
+
+    return total ? total : 0;
   }
 }

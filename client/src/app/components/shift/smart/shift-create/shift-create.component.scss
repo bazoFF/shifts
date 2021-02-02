@@ -27,7 +27,7 @@
   &__total {
     display: flex;
     padding: 0 10px 10px 10px;
-    width: max-content;
+    min-width: 200px;
     justify-content: space-between;
     font-size: 17px;
     white-space: nowrap;

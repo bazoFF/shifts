@@ -6,9 +6,11 @@ import { IShiftDb, IShiftListItem } from '../models/shift';
 })
 export class ShiftMapper {
     static mapToShiftListItem(item: IShiftDb): IShiftListItem {
+        const totalLoaded = item.works.length > 0 ? item.works.map(w => w.loaded).reduce((a, b) => a + b) : 0;
+
         return {
             ...item,
-            totalLoaded: item.works.length > 0 ? item.works.map(w => w.loaded).reduce((a, b) => a + b) : 0
+            totalLoaded: totalLoaded ? totalLoaded : 0
         };
     }
 }

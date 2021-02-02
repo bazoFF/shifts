@@ -58,22 +58,44 @@
                     Обязательное поле
                 </div>
                 <div class="invalid-feedback" *ngIf="form.get('endDate').hasError('startEnd')">
-                    Дата начала не может быть больше даты окончания
+                    Дата окончания не может быть раньше даты начала
                 </div>
             </div>
         </div>
-        <ng-container [ngSwitch]="form.get('craneType').value">
+        <div [ngSwitch]="form.get('craneType').value"
+             [class.is-invalid]="form.get('works').invalid && form.get('works').touched">
             <ng-container *ngSwitchCase="craneTypes.Single">
-                <app-shift-work header="Кран" [works]="getWorks(cranes.Single)" (worksChange)="setWorks($event, cranes.Single)" [crane]="cranes.Single"></app-shift-work>
+                <app-shift-work header="Кран"
+                                [works]="getWorks(cranes.Single)"
+                                (worksChange)="setWorks($event, cranes.Single)"
+                                [crane]="cranes.Single"
+                ></app-shift-work>
             </ng-container>
             <ng-container *ngSwitchCase="craneTypes.Double">
-                <app-shift-work header="1-й кран" [works]="getWorks(cranes.Double1st)" (worksChange)="setWorks($event, cranes.Double1st)" [crane]="cranes.Double1st"></app-shift-work>
-                <app-shift-work header="2-й кран" [works]="getWorks(cranes.Double2nd)" (worksChange)="setWorks($event, cranes.Double2nd)" [crane]="cranes.Double2nd"></app-shift-work>
+                <app-shift-work header="1-й кран"
+                                [works]="getWorks(cranes.Double1st)"
+                                (worksChange)="setWorks($event, cranes.Double1st)"
+                                [crane]="cranes.Double1st"
+                ></app-shift-work>
+                <app-shift-work header="2-й кран"
+                                [works]="getWorks(cranes.Double2nd)"
+                                (worksChange)="setWorks($event, cranes.Double2nd)"
+                                [crane]="cranes.Double2nd"
+                ></app-shift-work>
             </ng-container>
-        </ng-container>
+        </div>
+        <div class="invalid-feedback pl-2 pr-2" *ngIf="form.get('works').hasError('required') && form.get('craneType').value">
+            <p class="text-center">Добавьте информацию о выполненной работе</p>
+        </div>
         <div class="d-flex flex-column align-items-end mt-2" *ngIf="form.get('craneType').value">
-            <h4 class="shift-create__total"><span>Всего погружено</span> <span class="ml-2">{{ totalLoaded }} т</span></h4>
-            <h4 class="shift-create__total"><span>Всего выгружено</span> <span class="ml-2">{{ totalUnloaded }} т</span></h4>
+            <h4 class="shift-create__total">
+                <span>Всего погружено </span>
+                <span class="ml-2">{{ totalLoaded }} т</span>
+            </h4>
+            <h4 class="shift-create__total">
+                <span>Всего выгружено </span>
+                <span class="ml-2">{{ totalUnloaded }} т</span>
+            </h4>
         </div>
     </form>
 </div>
