@@ -5,13 +5,15 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class StorageService {
+export class StorageService { // CRUD сервис для хранения данных в localStorage
   private readonly storageSubject: BehaviorSubject<IShiftDb[]>;
 
   constructor() {
-    const shifts: IShiftDb[] = JSON.parse(window.localStorage.getItem('SHIFTS'));
+    const shifts: IShiftDb[] = JSON.parse(window.localStorage.getItem('SHIFTS')); // парсим данные из localStorage
     this.storageSubject = new BehaviorSubject<IShiftDb[]>(shifts);
-    this.storageSubject.subscribe(items => window.localStorage.setItem('SHIFTS', JSON.stringify(items)));
+    this.storageSubject.subscribe( // подписываемся на прослушку событий
+        items => window.localStorage.setItem('SHIFTS', JSON.stringify(items)) // сохраняем данные в localStorage
+    );
   }
 
   private get shifts(): IShiftDb[] {

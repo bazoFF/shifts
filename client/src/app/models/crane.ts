@@ -1,9 +1,9 @@
-export enum CraneTypeEnum {
+export enum CraneTypeEnum { // типы кранов
     Single = 'Одинарный',
     Double = 'Двойной'
 }
 
-export enum CranesEnum {
+export enum CranesEnum { // значения кранов
     Single,
     Double1st,
     Double2nd,

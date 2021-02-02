@@ -1,4 +1,4 @@
-export const Tracks: string[] = generateTracks();
+export const Tracks: string[] = generateTracks(); // список грузовиков
 
 function generateTracks(): string[] {
     const tracks = [];

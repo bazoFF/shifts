@@ -1,4 +1,4 @@
-export interface IShift {
+export interface IShift { // структура смены
     craneType: string;
     fullName: string;
     startDate: Date;
@@ -6,18 +6,18 @@ export interface IShift {
     works: IShiftWork[];
 }
 
-export interface IShiftWork {
+export interface IShiftWork { // структура выполненной работы
     crane: number;
     track: number;
     loaded: number;
     unloaded: number;
 }
 
-export interface IShiftDb extends IShift {
+export interface IShiftDb extends IShift { // структура сущности в бд
     id: number;
 }
 
-export interface IShiftListItem extends IShiftDb {
+export interface IShiftListItem extends IShiftDb { // структура для отображения смены в списке
     totalLoaded: number;
 }
 

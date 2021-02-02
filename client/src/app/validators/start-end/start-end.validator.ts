@@ -1,9 +1,9 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export class StartEndValidator {
+export class StartEndValidator { // Валидатор для сравнения начальной и конечной дат
   static createValidator(startControl: AbstractControl) {
     return (endControl: AbstractControl): ValidationErrors | null => {
-      if (!startControl.value || !endControl.value) {
+      if (!startControl.value || !endControl.value) { // если значений нет, то это уже ответственность Validators.required
         return null;
       }
 

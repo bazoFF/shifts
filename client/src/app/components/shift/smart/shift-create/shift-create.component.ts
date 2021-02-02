@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CranesEnum, CraneTypeEnum } from '../../../../models/crane';
 import { FullNameValidator } from '../../../../validators/full-name/full-name.validator';
 import { StartEndValidator } from '../../../../validators/start-end/start-end.validator';
@@ -13,7 +13,7 @@ import { IShift, IShiftListItem, IShiftWork } from '../../../../models/shift';
   styleUrls: ['./shift-create.component.scss']
 })
 export class ShiftCreateComponent implements OnInit {
-  loading: boolean = false;
+  loading: boolean = false; // отвечает за состояние загрузки
   form: FormGroup;
   craneTypes = CraneTypeEnum;
   cranes = CranesEnum;
@@ -22,8 +22,7 @@ export class ShiftCreateComponent implements OnInit {
   constructor(
       public activeModal: NgbActiveModal,
       private formBuilder: FormBuilder,
-      private shiftService: ShiftService,
-      private cdRef: ChangeDetectorRef
+      private shiftService: ShiftService
   ) { }
 
   ngOnInit() {
@@ -34,17 +33,15 @@ export class ShiftCreateComponent implements OnInit {
     }
   }
 
-  get totalLoaded() {
+  get totalLoaded() { // Всего погружено
     return this.getTotal('loaded');
   }
 
-  get totalUnloaded() {
+  get totalUnloaded() { // Всего выгружено
     return this.getTotal('unloaded');
   }
 
   async submit() {
-    // this.form.get('works').updateValueAndValidity();
-
     if (this.form.valid) {
       const dto: IShift = {
         craneType: this.form.get('craneType').value,
@@ -96,7 +93,10 @@ export class ShiftCreateComponent implements OnInit {
 
     this.form.get('endDate').valueChanges.subscribe((value) => {
       if (value) {
-        this.form.get('works').setValidators(Validators.required);
+        this.form.get('works').setValidators([
+          Validators.required,
+          control => this.totalLoaded + this.totalUnloaded === 0 ? { required: true } : null
+        ]);
         this.form.get('works').updateValueAndValidity();
       }
     });

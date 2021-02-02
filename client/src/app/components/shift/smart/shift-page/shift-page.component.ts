@@ -22,35 +22,33 @@ export class ShiftPageComponent implements OnInit {
     this.load();
   }
 
-  load() {
+  load() { // загрузка списка смен
     this.loading = true;
     this.shiftService.read().subscribe((shifts) => {
       this.shifts = shifts;
-
-      // this.openShiftCreate(); // todo: remove
 
       this.loading = false;
       this.initiating = false;
     });
   }
 
-  openShiftCreate(shift: IShiftListItem = null): void {
+  openShiftCreate(shift: IShiftListItem = null): void { // открытие компонента добавления смены в модальном окне
     this.modalRef = this.modalService.open(ShiftCreateComponent, {centered: true, size: 'xl'});
 
     if (shift !== null) {
-      this.modalRef.componentInstance.shift = shift;
+      this.modalRef.componentInstance.shift = shift; // устанавливаем смену для её изменения, если она имеется
     }
 
-    this.modalRef.result.then(() => {
+    this.modalRef.result.then(() => { // после результирующего события в модальном окне перезагружаем список смен
       this.load();
     }).catch(() => { });
   }
 
-  edit(shift: IShiftListItem) {
+  edit(shift: IShiftListItem) { // открытие компонента изменения смены в модальном окне
     this.openShiftCreate(shift);
   }
 
-  delete(id: number) {
+  delete(id: number) { // удаление смены
     this.loading = true;
     this.shiftService.delete(id).subscribe(() => {
       this.load();
