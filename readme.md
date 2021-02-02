@@ -4,7 +4,7 @@
 
 Запустите следующие команды:
 1. cd client
-2. npm install
-3. ng serve
+2. npm install (для выполнения это команды нужно установить Node.js)
+3. ng serve (для выполнения это команды нужен Angular CLI)
 
 Перейдите по ссылке - http://localhost:4200 
