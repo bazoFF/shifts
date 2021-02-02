@@ -105,6 +105,7 @@ export class ShiftCreateComponent implements OnInit {
   private bindForm(): void {
     this.form.patchValue(this.shift);
     this.form.get('craneType').disable();
+    this.form.get('startDate').updateValueAndValidity();
   }
 
   private getTotal(type: string): number {
